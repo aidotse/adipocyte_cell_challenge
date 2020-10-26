@@ -10,9 +10,9 @@ In this repository we provide extensive documentation to facilitate the understa
 │   ├── Adipocyte_pipeline_40x_ver1.cpproj : Cell profiler pipe line to generate image features for 40x images
 │   └── Adipocyte_pipeline_60x_ver1.cpproj : Cell profiler pipe line to generate image features for 60x images
 ├── documentation
-│   ├── dataset\ description.pdf           : Description of data set
+│   ├── dataset\ description.pdf           : Description of data set from the call
 │   ├── evaluation_criteria_hackathon.pdf  : Description of all evaluation metrics and how they are combined into a final metric
-│   ├── problem_formulation_with_logos.pdf : Problem formulation from the application 
+│   ├── problem_formulation_with_logos.pdf : Problem formulation from the call  
 │   ├── report_template.docx               : Template detailing the expected content of the project report (.docx) 
 │   └── report_template.pdf                : Template detailing the expected content of the project report (.pdf) 
 └── evaluation_code

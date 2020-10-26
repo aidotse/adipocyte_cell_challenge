@@ -1,35 +1,22 @@
-# Adipocyte Cell Challenge
+# Documentation
 
-In this repository we provide extensive documentation to facilitate the understanding of the problem, its context and how the hackathon contributions will be evaluated. We furthermore provide the nessessary code to run the evaluation suite used to generate the quantitative evaluation metric used to assess the hackathon contributions. The content and structure of the repo is given by the following 
+Here we provide extensive documentation to facilitate the understanding of the problem, its context and the evaluation criteria that will be used to rank the hackathon contributions. 
 
-```sh
-.
-├── README.md
-├── cellprofiler_pipelines
-│   ├── Adipocyte_pipeline_20x_ver2.cpproj : Cell profiler pipe line to generate image features for 20x images
-│   ├── Adipocyte_pipeline_40x_ver1.cpproj : Cell profiler pipe line to generate image features for 40x images
-│   └── Adipocyte_pipeline_60x_ver1.cpproj : Cell profiler pipe line to generate image features for 60x images
-├── documentation
-│   ├── dataset\ description.pdf           : Description of data set
-│   ├── evaluation_criteria_hackathon.pdf  : Description of all evaluation metrics and how they are combined into a final metric
-│   ├── problem_formulation_with_logos.pdf : Problem formulation from the application 
-│   ├── report_template.docx               : Template detailing the expected content of the project report (.docx) 
-│   └── report_template.pdf                : Template detailing the expected content of the project report (.pdf) 
-└── evaluation_code
-    ├── evaluation_pipe_line.PNG
-    └── hackathon_evaluation_metrics.ipynb : code to run the evaluation pipe line for the quantitative evaluation metric 
-```
-For more detailed information about the content of each folder, please see the corresponding readme file.
-
-## Cell Profiler Pipe Lines
-
-<img src="evaluation_code/evaluation_pipe_line.PNG" align="center" >
+## Dataset Description  
+Description of data set from the call
 
 
-## Evaluation code
+## Problem Formulation 
+This is the problem formulation document from the hackathon call 
 
-<img src="evaluation_code/evaluation_pipe_line.PNG" align="center" >
+## Evaluation Criteria Hackathon
+Description of all evaluation criteria and how they will be combined to rank the hackathon contributions
 
-## Documentation
+## Report template 
 
-<img src="evaluation_code/evaluation_pipe_line.PNG" align="center" >
+This is a template for the project report to be handed in at the
+hackathon dead-line. The purpose of this document is to enable the end-user to understand the solution
+and to run the code for evaluation. The report is also a document which allows the end-user to reproduce the result of the solution from scratch.
+Furthermore, the quality and coverage of the project report are themselves part of the evaluation criteria
+for the hackathon contribution. This template thus serves the purpose of aligning the reports from the
+different hackathon participants, allowing a fair report comparison. 
