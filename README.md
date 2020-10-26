@@ -5,30 +5,19 @@ In this repository we provide extensive documentation to facilitate the understa
 ```sh
 .
 ├── README.md
-├── notebooks
-│   ├── eda
-│   ├── modelling
-│   ├── notebook_template.ipynb
-│   ├── post_processing
-│   │   ├── evaluate_results.ipynb
-│   │   └── summarize_results.ipynb
-│   ├── pre_processing
-│   └── presentation
-├── project_local_setup.py
-├── scripts
-│   ├── run_python_script.sh
-│   ├── run_sbatch.sh
-│   └── train_model.py
-├── src
-│   ├── docs
-│   ├── misc
-│   │   └── examples.py
-│   ├── pipeline
-│   ├── plotting
-│   ├── project_parameters.py
-│   └── settings.py
-└── tests
-    └── test_template.py
+├── cellprofiler_pipelines
+│   ├── Adipocyte_pipeline_20x_ver2.cpproj : Cell profiler pipe line to generate image features for 20x images
+│   ├── Adipocyte_pipeline_40x_ver1.cpproj : Cell profiler pipe line to generate image features for 40x images
+│   └── Adipocyte_pipeline_60x_ver1.cpproj : Cell profiler pipe line to generate image features for 60x images
+├── documentation
+│   ├── dataset\ description.pdf           : Description of data set
+│   ├── evaluation_criteria_hackathon.pdf  : Description of all evaluation metrics and how they are combined into a final metric
+│   ├── problem_formulation_with_logos.pdf : Problem formulation from the application 
+│   ├── report_template.docx               : Template detailing the expected content of the project report (.docx) 
+│   └── report_template.pdf                : Template detailing the expected content of the project report (.pdf) 
+└── evaluation_code
+    ├── evaluation_pipe_line.PNG
+    └── hackathon_evaluation_metrics.ipynb : code to run the evaluation pipe line for the quantitative evaluation metric 
 ```
 For more detailed information about the content of each folder, please see the corresponding readme file.
 
