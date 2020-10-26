@@ -21,15 +21,3 @@ In this repository we provide extensive documentation to facilitate the understa
 ```
 For more detailed information about the content of each folder, please see the corresponding readme file.
 
-## Cell Profiler Pipe Lines
-
-<img src="evaluation_code/evaluation_pipe_line.PNG" align="center" >
-
-
-## Evaluation code
-
-<img src="evaluation_code/evaluation_pipe_line.PNG" align="center" >
-
-## Documentation
-
-<img src="evaluation_code/evaluation_pipe_line.PNG" align="center" >

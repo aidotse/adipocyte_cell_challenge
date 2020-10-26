@@ -2,7 +2,7 @@
 
 This folder contains the Cell Profiler pipe lines that are used to extract biologically relevant information from the flourescence images. There is one pipe line for each magnification. 
 
-<img src="cp_pipe_line.png" align="center" >
+<img src="cp_pipeline.png" align="center" >
 
 To run the pipeline go to https://cellprofiler.org/ and download the latest version of the software. The pipeline is run by importing the .cpproj-file into the software. The image folder needs to contain image triplets with the following naming convention:
 
