@@ -1,3 +1,3 @@
-# adipocyte_cell_challenge
+# Adipocyte Cell Challenge
 
-<img src="evaluation_pipe_line.PNG" align="center" >
+<img src="evaluation_code/evaluation_pipe_line.PNG" align="center" >
