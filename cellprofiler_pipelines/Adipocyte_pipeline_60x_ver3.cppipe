@@ -1,0 +1,865 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:405
+GitHash:
+ModuleCount:56
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\\\\\\\\/]\\\\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:655090_(?P<Well>[A-P][0-9]{1,2})_(?P<Timepoint>[A-z][0-9]{1,4})(?P<FoV>[A-z][0-9]{1,4})(?P<TimeLine>[A-z][0-9]{1,2})(?P<ActionList>[A-z][0-9]{1,2})(?P<Zpos>[A-z][0-9]{1,2})(?P<Channel>[A-z][0-9]{1,2})
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "C02")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:3
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "C01.tif")
+    Name to assign these images:Hoechst
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image bit-depth
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "C02.tif")
+    Name to assign these images:Bodipy
+    Name to assign these objects:Nucleus
+    Select the image type:Grayscale image
+    Set intensity range from:Image bit-depth
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "C03.tif")
+    Name to assign these images:CellTrackerRed
+    Name to assign these objects:Cytoplasm
+    Select the image type:Grayscale image
+    Set intensity range from:Image bit-depth
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+RescaleIntensity:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale the three fluorescent images from 0 to 1.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Hoechst
+    Name the output image:RescaleIntensity
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+RescaleIntensity:[module_num:6|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale lipid image']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Bodipy
+    Name the output image:Bodipy_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+RescaleIntensity:[module_num:7|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale cytoplasm stain image']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CellTrackerRed
+    Name the output image:CellTrackerRed_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+IdentifyPrimaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:14|show_window:True|notes:['Find nuclei. The cells are differentiated from stem cells and can become fat cells (adipocytes) or more like fiborblasts. Fibroblasts nuceli are larger and rounder.', '', 'Robust segmentation is difficult for various reasons. The lipid vesicles either occlude the nuceli or, physically change their shape so that the nuclei are not round as in most cells. Sometimes the entire nucleus is also not visible within the confocal imaging plane. Nuclear intensity also varies. Finally, lipid droplets can work as lenses giving the nuclei a bubbly appearance. Here the original image is used.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Hoechst
+    Name the primary objects to be identified:nuclei
+    Typical diameter of objects, in pixel units (Min,Max):50,200
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Shape
+    Method to draw dividing lines between clumped objects:Shape
+    Size of smoothing filter:80
+    Suppress local maxima that are closer than this minimum allowed distance:35
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:No
+    Automatically calculate minimum allowed distance between local maxima?:No
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Display accepted local maxima?:No
+    Select maxima color:red
+    Use advanced settings?:Yes
+    Threshold setting version:11
+    Threshold strategy:Adaptive
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:5
+    Threshold correction factor:1
+    Lower and upper bounds on threshold:0.01,1
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:93
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+MeasureObjectSizeShape:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Measure morphological (form) features.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:nuclei
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+MeasureObjectIntensity:[module_num:10|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Measure the intensity of the nuclear stain.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Hoechst
+    Select objects to measure:nuclei
+
+FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['Filter nuclei. At this point the fibroblast and adipose nuclei could be separated somewhat based on their shape and relationship to lipids, but that is not done in this case. Here, we just want to get rid of incorrectly identified nuclear objects, the apoptotic ones inparticular because they are intensely stained.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:nuclei
+    Name the output objects:Nuclei_filtered
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:3
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Select the measurement to filter by:AreaShape_FormFactor
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1
+    Select the measurement to filter by:AreaShape_Area
+    Filter using a minimum measurement value?:Yes
+    Minimum value:50
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Select the measurement to filter by:Intensity_MeanIntensity_Hoechst
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0.04
+
+ImageMath:[module_num:12|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['Combine the images of the lipid and cytoplasmic stains to use for segmenting the cell bodies.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Average
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:lipids_cytoplasm
+    Image or measurement?:Image
+    Select the first image:Bodipy
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:CellTrackerRed
+    Multiply the second image by:3
+    Measurement:
+
+IdentifySecondaryObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['Use the images from the previous steps, together with the nuclei, to identify the cell bodies (cytoplasm). Accurate segmentation of adipocyte cells is difficult and the cell boundaries as determined here are somewhat arbitrary. Here the weighting has been adjusted to create relatively compact objects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Nuclei_filtered
+    Name the objects to be identified:cell_bodies
+    Select the method to identify the secondary objects:Propagation
+    Select the input image:lipids_cytoplasm
+    Number of pixels by which to expand the primary objects:10
+    Regularization factor:0.1
+    Discard secondary objects touching the border of the image?:No
+    Discard the associated primary objects?:No
+    Name the new primary objects:FilteredNuclei
+    Fill holes in identified objects?:Yes
+    Threshold setting version:11
+    Threshold strategy:Adaptive
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.34
+    Threshold correction factor:0.70
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Three classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:185
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+FilterObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['Create a cellular population without edge objects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:cell_bodies
+    Name the output objects:cells_no_edge
+    Select the filtering mode:Image or mask border
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:1
+    Assign overlapping child to:Both parents
+    Select the measurement to filter by:AreaShape_Area
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+    Select additional object to relabel:Nuclei_filtered
+    Name the relabeled objects:nuclei_no_edge
+
+GrayToColor:[module_num:15|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Create color overlay for showing cell boundaries.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select a color scheme:RGB
+    Rescale intensity:Yes
+    Select the image to be colored red:Bodipy
+    Select the image to be colored green:CellTrackerRed
+    Select the image to be colored blue:Hoechst
+    Name the output image:ColorImage
+    Relative weight for the red image:1.0
+    Relative weight for the green image:1.0
+    Relative weight for the blue image:1.0
+    Select the image to be colored cyan:Leave this black
+    Select the image to be colored magenta:Leave this black
+    Select the image to be colored yellow:Leave this black
+    Select the image that determines brightness:Leave this black
+    Relative weight for the cyan image:1.0
+    Relative weight for the magenta image:1.0
+    Relative weight for the yellow image:1.0
+    Relative weight for the brightness image:1.0
+    Hidden:1
+    Image name:None
+    Color:#ff0000
+    Weight:1.0
+
+OverlayOutlines:[module_num:16|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Create overlay image of cell segmentation.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:ColorImage
+    Name the output image:Cells_no_edge_overlay
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Thick
+    Select outline color:#00C400
+    Select objects to display:nuclei_no_edge
+    Select outline color:#FF8000
+    Select objects to display:cells_no_edge
+
+RescaleIntensity:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Rescale to create output image.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Cells_no_edge_overlay
+    Name the output image:Cell_segmentation
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+SaveImages:[module_num:18|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:['Save cellular segmentation image.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:Cell_segmentation
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:Hoechst
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_cells
+    Saved file format:jpeg
+    Output file location:Default Input Folder sub-folder|Desktop\\Hackathon\\Output
+    Image bit depth:32-bit floating point
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Default Output Folder|
+    How to save the series:T (Time)
+
+MeasureObjectSizeShape:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Measure the shape of the cell bodies that are not bisected by the edge of the image.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:cells_no_edge, nuclei_no_edge
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+MeasureObjectIntensity:[module_num:20|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Measure the intensity of the cells in the Hoechst, Bodipy and CellTrackerRed channels (lipids and cytoplasm).']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Bodipy, CellTrackerRed, Hoechst
+    Select objects to measure:cells_no_edge, nuclei_no_edge
+
+EnhanceOrSuppressFeatures:[module_num:21|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:['This is the start of the lipid droplet segmentation. CellProfiler has trouble with the large range of sizes. Large droplets and small droplets will be segmented separately. There are also a range of intensities and, the lipid droplets have defects that impair accurate segmentation.', '', 'Enhance small lipid droplets to improve segmentation fidelity.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Bodipy
+    Name the output image:Enhance_small_droplets
+    Select the operation:Enhance
+    Feature size:10
+    Feature type:Speckles
+    Range of hole sizes:1,10
+    Smoothing scale:2.0
+    Shear angle:0.0
+    Decay:0.95
+    Enhancement method:Tubeness
+    Speed and accuracy:Fast
+    Rescale result image:No
+
+Smooth:[module_num:22|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['Smooth the enhanced droplet image to get rid of the noise.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Enhance_small_droplets
+    Name the output image:Enhance_small_droplets_smoothed
+    Select smoothing method:Median Filter
+    Calculate artifact diameter automatically?:No
+    Typical artifact diameter:2
+    Edge intensity difference:0.1
+    Clip intensities to 0 and 1?:Yes
+
+RescaleIntensity:[module_num:23|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale the result enhanced droplet image.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Enhance_small_droplets_smoothed
+    Name the output image:Enhance_small_droplet_smoothed_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+Smooth:[module_num:24|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['Smooth the larger droplets to reduce over segmentation (object fragmentation). Over segmentation is also caused by droplet defects. These could be repaired, but it is complicated to do.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Bodipy
+    Name the output image:Large_droplets_smoothed
+    Select smoothing method:Circular Average Filter
+    Calculate artifact diameter automatically?:No
+    Typical artifact diameter:10
+    Edge intensity difference:0.1
+    Clip intensities to 0 and 1?:Yes
+
+RescaleIntensity:[module_num:25|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale large droplet image.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Large_droplets_smoothed
+    Name the output image:Large_droplets_smoothed_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+ImageMath:[module_num:26|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['This is actually a threshold - but it does not create a binary image. It selects the larger brighter lipid droplets from the smoothed large droplet image. This will help to reduce droplet fragementation by smoothing only the large droplets.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:None
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:-0.4
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:Large_droplets_smoothed_rescaled_thresholded
+    Image or measurement?:Image
+    Select the first image:Large_droplets_smoothed_rescaled
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:None
+    Multiply the second image by:1.0
+    Measurement:
+
+ImageMath:[module_num:27|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['Create new image with smoothed large and enhanced small droplets for segmentation.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Average
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:Droplet_segmentation_image
+    Image or measurement?:Image
+    Select the first image:Bodipy_rescaled
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:Enhance_small_droplet_smoothed_rescaled
+    Multiply the second image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the third image:Large_droplets_smoothed_rescaled_thresholded
+    Multiply the third image by:1.0
+    Measurement:
+
+RescaleIntensity:[module_num:28|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale the droplet segmentation image again.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Droplet_segmentation_image
+    Name the output image:Droplet_segmentation_image_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+IdentifyPrimaryObjects:[module_num:29|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:['Identify the small lipid droplets. Standard methods available within CellProfiler are used, with reasonable success. A more complicated method using interval thresholding to identify seeds for secondary segmentation would likely perform better. This segmentation step over segments the larger droplets.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Droplet_segmentation_image_rescaled
+    Name the primary objects to be identified:lipid_droplets
+    Typical diameter of objects, in pixel units (Min,Max):3,20
+    Discard objects outside the diameter range?:No
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:3
+    Suppress local maxima that are closer than this minimum allowed distance:3
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:No
+    Automatically calculate minimum allowed distance between local maxima?:No
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Display accepted local maxima?:No
+    Select maxima color:Blue
+    Use advanced settings?:Yes
+    Threshold setting version:11
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:3
+    Threshold correction factor:1
+    Lower and upper bounds on threshold:0.05,1
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:100
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+IdentifyPrimaryObjects:[module_num:30|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:['Use the threshold large droplet image to segment the large lipid droplets separately. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Large_droplets_smoothed_rescaled_thresholded
+    Name the primary objects to be identified:big_droplets
+    Typical diameter of objects, in pixel units (Min,Max):30,150
+    Discard objects outside the diameter range?:No
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:5
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:No
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Display accepted local maxima?:No
+    Select maxima color:Blue
+    Use advanced settings?:Yes
+    Threshold setting version:11
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:2
+    Lower and upper bounds on threshold:0.2,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+CombineObjects:[module_num:31|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:["Combine the large and small object populations. The larger objects will be merged with the smaller ones where there is overlap, removing much of the large droplet over-segmentation. It's not perfect though because of defects in the droplets (dents, creases, folds)."]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select initial object set:big_droplets
+    Select object set to combine:lipid_droplets
+    Select how to handle overlapping objects:Merge
+    Name the combined object set:Lipid_droplets_final_segmentation
+
+OverlayOutlines:[module_num:32|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Create an overlay image showing the lipid segmentation.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:Bodipy
+    Name the output image:Lipid_droplet_overlay
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Thick
+    Select outline color:Red
+    Select objects to display:Lipid_droplets_final_segmentation
+
+RescaleIntensity:[module_num:33|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Rescale']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Lipid_droplet_overlay
+    Name the output image:Lipid_droplet_overlay_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+SaveImages:[module_num:34|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:['Save the droplet overlay.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:Lipid_droplet_overlay_rescaled
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:Bodipy
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_droplets
+    Saved file format:jpeg
+    Output file location:Default Input Folder sub-folder|Desktop\\Hackathon\\Output
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Default Output Folder|
+    How to save the series:T (Time)
+
+FilterObjects:[module_num:35|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:Lipid_droplets_final_segmentation
+    Name the output objects:Lipids_no_edge
+    Select the filtering mode:Image or mask border
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Select the measurement to filter by:AreaShape_Area
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+
+MeasureObjectSizeShape:[module_num:36|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Measure shape aspects of the dropletss.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Lipids_no_edge
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+MeasureImageIntensity:[module_num:37|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Measure the lipid droplet intensities at the image level using the droplet segmentation as a mask.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Bodipy
+    Measure the intensity only from areas enclosed by objects?:Yes
+    Select input object sets:Lipids_no_edge
+
+MeasureObjectIntensity:[module_num:38|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Measure the intensity of the lipid droplets at the object level.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Bodipy
+    Select objects to measure:Lipids_no_edge
+
+MeasureGranularity:[module_num:39|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Bodipy
+    Measure within objects?:No
+    Select objects to measure:
+    Subsampling factor for granularity measurements:0.25
+    Subsampling factor for background reduction:0.25
+    Radius of structuring element:10
+    Range of the granular spectrum:16
+
+EnhanceOrSuppressFeatures:[module_num:40|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:['This section attempts to quantify texture in the lipid droplets. The droplets have "defects" like holes, creases or folds. Detecting these features is quite hard to do because there are also dark areas between the droplets.', 'Enhance high frequency features.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Bodipy_rescaled
+    Name the output image:Enhance_speckles
+    Select the operation:Enhance
+    Feature size:10
+    Feature type:Speckles
+    Range of hole sizes:1,10
+    Smoothing scale:2.0
+    Shear angle:0.0
+    Decay:0.95
+    Enhancement method:Tubeness
+    Speed and accuracy:Fast
+    Rescale result image:No
+
+RescaleIntensity:[module_num:41|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Enhance_speckles
+    Name the output image:Enhance_speckles_rescale
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+ImageMath:[module_num:42|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['Enhance the high-frequency bright features to create more contrast to the darker features.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Average
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:Enhance_holes_step1
+    Image or measurement?:Image
+    Select the image:Bodipy_rescaled
+    Multiply the image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the image:Enhance_speckles_rescale
+    Multiply the image by:2.0
+    Measurement:
+
+RescaleIntensity:[module_num:43|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Enhance_holes_step1
+    Name the output image:Enhance_holes_step1_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+EnhanceOrSuppressFeatures:[module_num:44|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:['Enhance high frequency dark features.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Enhance_holes_step1_rescaled
+    Name the output image:Enhance_holes_step2
+    Select the operation:Enhance
+    Feature size:10
+    Feature type:Dark holes
+    Range of hole sizes:3,10
+    Smoothing scale:2.0
+    Shear angle:0.0
+    Decay:0.95
+    Enhancement method:Tubeness
+    Speed and accuracy:Fast
+    Rescale result image:No
+
+RescaleIntensity:[module_num:45|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Enhance_holes_step2
+    Name the output image:Enhance_holes_step2_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+ImageMath:[module_num:46|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['This step is used to suppress the dark area found between the droplets, as the holes in the droplets usually have higher intensity.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Multiply
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:Droplet_defects
+    Image or measurement?:Image
+    Select the image:Bodipy_rescaled
+    Multiply the image by:5.0
+    Measurement:
+    Image or measurement?:Image
+    Select the image:Enhance_holes_step2_rescaled
+    Multiply the image by:1.0
+    Measurement:
+
+RescaleIntensity:[module_num:47|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale....']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Droplet_defects
+    Name the output image:Droplet_defects_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+ExpandOrShrinkObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['Erode the lipid droplet masks a little.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Lipid_droplets_final_segmentation
+    Name the output objects:Lipid_droplets_final_segmentation_shrink
+    Select the operation:Shrink objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:3
+    Fill holes in objects so that all objects shrink to a single point?:No
+
+MaskImage:[module_num:49|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Mask the image with the defects using the eroded lipid droplet mask - this also helps to suppress "hole" signals between the droplets. Over segmentation of the lipid droplets creates problems here.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Droplet_defects_rescaled
+    Name the output image:Defect_image_masked
+    Use objects or an image as a mask?:Objects
+    Select object for mask:Lipid_droplets_final_segmentation_shrink
+    Select image for mask:None
+    Invert the mask?:No
+
+ImageMath:[module_num:50|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['Threshold the resulting defect image to remove the suppressed signals.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:None
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:-0.5
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:Defect_image_masked_thresholded
+    Image or measurement?:Image
+    Select the image:Droplet_defects_rescaled
+    Multiply the image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the image:None
+    Multiply the image by:1.0
+    Measurement:
+
+RescaleIntensity:[module_num:51|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Rescale.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Defect_image_masked_thresholded
+    Name the output image:Defect_image_rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+MeasureObjectIntensity:[module_num:52|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Measure the intensity of the defects inside the droplets.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Defect_image_rescaled
+    Select objects to measure:Lipids_no_edge
+
+FilterObjects:[module_num:53|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['Filter the droplets based on the intensity of the defect signals.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:Lipids_no_edge
+    Name the output objects:Defective_lipid_droplets
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Select the measurement to filter by:Intensity_IntegratedIntensity_Defect_image_rescaled
+    Filter using a minimum measurement value?:Yes
+    Minimum value:20
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+
+GrayToColor:[module_num:54|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['Create an overlay showing the droplet defects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select a color scheme:RGB
+    Rescale intensity:Yes
+    Select the image to be colored red:Bodipy_rescaled
+    Select the image to be colored green:Defect_image_rescaled
+    Select the image to be colored blue:Leave this black
+    Name the output image:Droplet_defect_color_overlay
+    Relative weight for the red image:1.0
+    Relative weight for the green image:1.0
+    Relative weight for the blue image:1.0
+    Select the image to be colored cyan:Leave this black
+    Select the image to be colored magenta:Leave this black
+    Select the image to be colored yellow:Leave this black
+    Select the image that determines brightness:Leave this black
+    Relative weight for the cyan image:1.0
+    Relative weight for the magenta image:1.0
+    Relative weight for the yellow image:1.0
+    Relative weight for the brightness image:1.0
+    Hidden:1
+    Image name:None
+    Color:#ff0000
+    Weight:1.0
+
+SaveImages:[module_num:55|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:['Save defect overlay']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Select the type of image to save:Image
+    Select the image to save:Droplet_defect_color_overlay
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:Bodipy
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_defects
+    Saved file format:jpeg
+    Output file location:Default Input Folder sub-folder|Desktop\\Hackathon\\Output
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Default Output Folder|
+    How to save the series:T (Time)
+
+ExportToSpreadsheet:[module_num:56|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:['export measurement data to CSV file']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:Yes
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:Yes
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:Yes
+    Output file location:Default Input Folder sub-folder|Desktop\\Hackathon\\Output
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:No
+    Press button to select measurements:Image|Granularity_6_Bodipy,Image|Granularity_13_Bodipy,Image|Granularity_15_Bodipy,Image|Granularity_8_Bodipy,Image|Granularity_10_Bodipy,Image|Granularity_16_Bodipy,Image|Granularity_1_Bodipy,Image|Granularity_7_Bodipy,Image|Granularity_2_Bodipy,Image|Granularity_9_Bodipy,Image|Granularity_11_Bodipy,Image|Granularity_3_Bodipy,Image|Granularity_12_Bodipy,Image|Granularity_5_Bodipy,Image|Granularity_14_Bodipy,Image|Granularity_4_Bodipy,Image|Count_Defective_lipid_droplets,Image|Count_Lipids_no_edge,Image|Count_nuclei,Image|Count_nuclei_no_edge,Image|Count_cells_no_edge,Image|Metadata_FoV,Image|Metadata_Well,cells_no_edge|Intensity_IntegratedIntensity_CellTrackerRed,cells_no_edge|Intensity_IntegratedIntensity_Bodipy,cells_no_edge|Intensity_StdIntensity_Bodipy,cells_no_edge|Intensity_StdIntensity_CellTrackerRed,cells_no_edge|Intensity_MeanIntensity_Bodipy,cells_no_edge|Intensity_MeanIntensity_CellTrackerRed,cells_no_edge|AreaShape_Perimeter,cells_no_edge|AreaShape_MeanRadius,cells_no_edge|AreaShape_Solidity,cells_no_edge|AreaShape_Compactness,cells_no_edge|AreaShape_Area,cells_no_edge|AreaShape_FormFactor,cells_no_edge|Number_Object_Number,nuclei_no_edge|AreaShape_Compactness,nuclei_no_edge|AreaShape_Area,nuclei_no_edge|AreaShape_Solidity,nuclei_no_edge|AreaShape_FormFactor,nuclei_no_edge|AreaShape_MeanRadius,nuclei_no_edge|AreaShape_Perimeter,nuclei_no_edge|Intensity_IntegratedIntensity_Bodipy,nuclei_no_edge|Intensity_IntegratedIntensity_Hoechst,nuclei_no_edge|Intensity_IntegratedIntensity_CellTrackerRed,nuclei_no_edge|Intensity_StdIntensity_CellTrackerRed,nuclei_no_edge|Intensity_StdIntensity_Hoechst,nuclei_no_edge|Intensity_StdIntensity_Bodipy,nuclei_no_edge|Intensity_MeanIntensity_CellTrackerRed,nuclei_no_edge|Intensity_MeanIntensity_Bodipy,nuclei_no_edge|Intensity_MeanIntensity_Hoechst,nuclei_no_edge|Number_Object_Number,Lipids_no_edge|Intensity_MeanIntensity_Defect_image_rescaled,Lipids_no_edge|Intensity_MeanIntensity_Bodipy,Lipids_no_edge|Intensity_StdIntensity_Bodipy,Lipids_no_edge|Intensity_StdIntensity_Defect_image_rescaled,Lipids_no_edge|Intensity_IntegratedIntensity_Bodipy,Lipids_no_edge|Intensity_IntegratedIntensity_Defect_image_rescaled,Lipids_no_edge|AreaShape_Solidity,Lipids_no_edge|AreaShape_FormFactor,Lipids_no_edge|AreaShape_MeanRadius,Lipids_no_edge|AreaShape_Perimeter,Lipids_no_edge|AreaShape_Compactness,Lipids_no_edge|AreaShape_Area,Lipids_no_edge|Number_Object_Number
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:Adipocytes_
+    Overwrite existing files without warning?:Yes
+    Data to export:Image
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
